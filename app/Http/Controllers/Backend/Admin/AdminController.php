@@ -15,6 +15,7 @@ class AdminController extends Controller
         $blogs = Blog::count();
         return view('backend.layouts.index',compact('cards','vouchers','blogs'));
     }
+
 }
 
 

@@ -13,8 +13,14 @@
         <script src="{{ asset('backend') }}/assets/js/app.js"></script>
         {{-- multiselect --}}
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
         <script>
-        $(document).ready(function() {
+            $(document).ready(function() {
                 $('.js-example-basic-multiple').select2();
-        });
+            });
+        </script>
+        <script>
+            $(document).ready(function() {
+                $('.datatable').DataTable();
+            })
         </script>

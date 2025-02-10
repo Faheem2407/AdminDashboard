@@ -19,18 +19,24 @@
         <a href="{{ route('amounts.create') }}" class="btn btn-primary mb-3">Create New Amount</a>
 
         <!-- Amounts Table -->
-        <table class="table table-striped table-dark">
+        <table class="table table-striped table-dark datatable">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Value</th>
+                    <th>Amount</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
+                @php
+                    $count = 0;
+                @endphp
                 @forelse ($amounts as $amount)
+                    @php
+                        $count++;
+                    @endphp
                     <tr>
-                        <td>{{ $amount->id }}</td>
+                        <td>{{ $count }}</td>
                         <td>{{ $amount->value }}</td>
                         <td>
                             <a href="{{ route('amounts.show', $amount->id) }}" class="btn btn-info btn-sm">View</a>

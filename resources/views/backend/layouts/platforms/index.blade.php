@@ -19,7 +19,7 @@
         <a href="{{ route('platforms.create') }}" class="btn btn-primary mb-3">Create New Platform</a>
 
         <!-- Platforms Table -->
-        <table class="table table-striped table-dark">
+        <table class="table table-striped table-dark datatable">
             <thead>
                 <tr>
                     <th>ID</th>

@@ -19,7 +19,7 @@
         <a href="{{ route('cards.create') }}" class="btn btn-primary mb-3">Create New Card</a>
 
         <!-- Cards Table -->
-        <table class="table table-striped table-dark">
+        <table class="table table-striped table-dark datatable">
             <thead>
                 <tr>
                     <th>ID</th>

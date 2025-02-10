@@ -9,6 +9,7 @@ use App\Http\Controllers\Backend\Admin\CardController;
 use App\Http\Controllers\Backend\Admin\BlogController;
 use App\Http\Controllers\Backend\Admin\AmountController;
 use App\Http\Controllers\Backend\Admin\VersionController;
+use App\Http\Controllers\Backend\UserController;
 
 // admin dashboard
 Route::get('/',[AdminController::class,'index'])->name('admin-dashboard');
@@ -48,44 +49,47 @@ Route::delete('/cards/{card}', [CardController::class, 'destroy'])->name('cards.
 
 
 // Blogs Routes
-Route::get('/blogs', [BlogController::class, 'index'])->name('blogs.index'); // List all blogs
-Route::get('/blogs/create', [BlogController::class, 'create'])->name('blogs.create'); // Show create form
-Route::post('/blogs', [BlogController::class, 'store'])->name('blogs.store'); // Store a new blog
-Route::get('/blogs/{blog}', [BlogController::class, 'show'])->name('blogs.show'); // Show a single blog
-Route::get('/blogs/{blog}/edit', [BlogController::class, 'edit'])->name('blogs.edit'); // Show edit form
-Route::put('/blogs/{blog}', [BlogController::class, 'update'])->name('blogs.update'); // Update a blog
-Route::delete('/blogs/{blog}', [BlogController::class, 'destroy'])->name('blogs.destroy'); // Delete a blog
+// Route::get('/blogs', [BlogController::class, 'index'])->name('blogs.index'); // List all blogs
+// Route::get('/blogs/create', [BlogController::class, 'create'])->name('blogs.create'); // Show create form
+// Route::post('/blogs', [BlogController::class, 'store'])->name('blogs.store'); // Store a new blog
+// Route::get('/blogs/{blog}', [BlogController::class, 'show'])->name('blogs.show'); // Show a single blog
+// Route::get('/blogs/{blog}/edit', [BlogController::class, 'edit'])->name('blogs.edit'); // Show edit form
+// Route::put('/blogs/{blog}', [BlogController::class, 'update'])->name('blogs.update'); // Update a blog
+// Route::delete('/blogs/{blog}', [BlogController::class, 'destroy'])->name('blogs.destroy'); // Delete a blog
 
-
+Route::resource('blogs',BlogController::class);
 
 
 // Amounts Routes
-Route::get('/amounts', [AmountController::class, 'index'])->name('amounts.index'); // List all amounts
-Route::get('/amounts/create', [AmountController::class, 'create'])->name('amounts.create'); // Show create form
-Route::post('/amounts', [AmountController::class, 'store'])->name('amounts.store'); // Store a new amount
-Route::get('/amounts/{amount}', [AmountController::class, 'show'])->name('amounts.show'); // Show a single amount
-Route::get('/amounts/{amount}/edit', [AmountController::class, 'edit'])->name('amounts.edit'); // Show edit form
-Route::put('/amounts/{amount}', [AmountController::class, 'update'])->name('amounts.update'); // Update an amount
-Route::delete('/amounts/{amount}', [AmountController::class, 'destroy'])->name('amounts.destroy'); // Delete an amount
+// Route::get('/amounts', [AmountController::class, 'index'])->name('amounts.index'); // List all amounts
+// Route::get('/amounts/create', [AmountController::class, 'create'])->name('amounts.create'); // Show create form
+// Route::post('/amounts', [AmountController::class, 'store'])->name('amounts.store'); // Store a new amount
+// Route::get('/amounts/{amount}', [AmountController::class, 'show'])->name('amounts.show'); // Show a single amount
+// Route::get('/amounts/{amount}/edit', [AmountController::class, 'edit'])->name('amounts.edit'); // Show edit form
+// Route::put('/amounts/{amount}', [AmountController::class, 'update'])->name('amounts.update'); // Update an amount
+// Route::delete('/amounts/{amount}', [AmountController::class, 'destroy'])->name('amounts.destroy'); // Delete an amount
 
-
+Route::resource('amounts', AmountController::class);
 
 
 
 
 // Version Routes
-Route::get('/versions', [VersionController::class, 'index'])->name('versions.index'); // List all versions
-Route::get('/versions/create', [VersionController::class, 'create'])->name('versions.create'); // Show create form
-Route::post('/versions', [VersionController::class, 'store'])->name('versions.store'); // Store a new version
-Route::get('/versions/{version}', [VersionController::class, 'show'])->name('versions.show'); // Show a single version
-Route::get('/versions/{version}/edit', [VersionController::class, 'edit'])->name('versions.edit'); // Show edit form
-Route::put('/versions/{version}', [VersionController::class, 'update'])->name('versions.update'); // Update a version
-Route::delete('/versions/{version}', [VersionController::class, 'destroy'])->name('versions.destroy'); // Delete a version
+// Route::get('/versions', [VersionController::class, 'index'])->name('versions.index'); // List all versions
+// Route::get('/versions/create', [VersionController::class, 'create'])->name('versions.create'); // Show create form
+// Route::post('/versions', [VersionController::class, 'store'])->name('versions.store'); // Store a new version
+// Route::get('/versions/{version}', [VersionController::class, 'show'])->name('versions.show'); // Show a single version
+// Route::get('/versions/{version}/edit', [VersionController::class, 'edit'])->name('versions.edit'); // Show edit form
+// Route::put('/versions/{version}', [VersionController::class, 'update'])->name('versions.update'); // Update a version
+// Route::delete('/versions/{version}', [VersionController::class, 'destroy'])->name('versions.destroy'); // Delete a version
+
+Route::resource('versions', VersionController::class);
 
 
 
+// Route::get('/users',[UserController::class,'index'])->name('users.index');
 
-
+Route::resource('users', UserController::class);
 
 
 

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use App\Models\Amount;
 use App\Models\Version;
+use Exception;
 
 class CardController extends Controller
 {
@@ -29,60 +30,9 @@ class CardController extends Controller
         return view('backend.layouts.cards.create', compact('platforms', 'amounts','versions'));
     }
 
-    /**
-     * Store a newly created card in the database.
-     */
-    // public function store(Request $request)
-    // {
-    //     $request->validate([
-    //         'platform_id' => 'required|exists:platforms,id',
-    //         'title' => 'required|string|max:255',
-    //         'image' => 'nullable|image|mimes:png,jpg,jpeg,ico|max:2048',
-    //         'seller' => 'required|string|max:255',
-    //         'type' => 'required|in:voucher,gift_card',
-    //         'base_price' => 'required|numeric',
-    //         'discount' => 'nullable|numeric',
-    //         'stock' => 'required|integer',
-    //         'usage' => 'nullable|string',
-    //         'description' => 'nullable|string',
-    //         'delivery_time' => 'nullable|string',
-    //     ]);
-
-    //     //$card = Card::create($request->all());
-    //     $card = new Card;
-
-    //     if ($request->hasFile('image')) {
-    //         // // Delete old favicon if it exists
-    //         if ($card->image && Storage::exists('public/' . $card->image)) {
-    //             Storage::delete('public/' . $card->image);
-    //         }
-
-    //         // Store new favicon
-    //         $path = $request->file('image')->store('cards', 'public');
-    //         $card->image = $path;
-    //     }
-
-    //     // Update other fields
-    //     $card->create([
-    //         'platform_id' => $request->platform_id,
-    //         'title' => $request->title,
-    //         'image' => isset($path) ? $path : $card->image,
-    //         'seller' => $request->seller,
-    //         'type' => $request->type,
-    //         'base_price' => $request->base_price,
-    //         'discount' => $request->discount,
-    //         'stock' => $request->stock,
-    //         'usage' => $request->usage,
-    //         'description' => $request->description,
-    //         'delivery_time' => $request->delivery_time,
-    //                 'amounts' => 'required|array',
-    //                 'amounts.*' => 'integer|exists:amounts,id',
-    //     ]);
-
-    //     return redirect()->route('cards.index')->with('success', 'Card created successfully.');
-    // }
 
 
+    //recent comment
     public function store(Request $request)
     {
         $request->validate([
@@ -110,40 +60,45 @@ class CardController extends Controller
             'amounts' => 'required|array',
             'amounts.*' => 'integer|exists:amounts,id',
         ]);
+        try{
 
-        $card = new Card;
-
-        if ($request->hasFile('image')) {
-            if ($card->image && Storage::exists('public/' . $card->image)) {
-                Storage::delete('public/' . $card->image);
+            if ($request->hasFile('image')) {
+                if ($request->image && Storage::exists('public/' . $request->image)) {
+                    Storage::delete('public/' . $request->image);
+                }
+                $path = $request->file('image')->store('cards', 'public');
+                $image = $path;
             }
-            $path = $request->file('image')->store('cards', 'public');
-            $card->image = $path;
+        
+            $card = Card::create([
+                'platform_id' => $request->platform_id,
+                'title' => strtolower($request->title),
+                'image' => $image,
+                'seller' => $request->seller,
+                'type'=>$request->type,
+                'base_price'=>$request->base_price,
+                'discount'=> $request->discount,
+                'stock'=> $request->stock,
+                'usage'=> $request->usage,
+                'description'=> $request->description,
+                'delivery_time'=> $request->delivery_time,
+            ]);
+    
+            // dd($dsada );
+
+            $card->amounts()->sync($request->amounts);
+            $card->versions()->sync($request->versions);
+
+            return redirect()->route('cards.index')->with('success', 'Card created successfully.');
+
+        }catch(Exception $e){
+            return $e->getMessage();
         }
 
 
-        // Save the card with lowercase title
-        $card->platform_id = $request->platform_id;
-        $card->title = strtolower($request->title);
-        $card->image = isset($path) ? $path : $card->image;
-        $card->seller = $request->seller;
-        $card->type = $request->type;
-        $card->base_price = $request->base_price;
-        $card->discount = $request->discount;
-        $card->stock = $request->stock;
-        $card->usage = $request->usage;
-        $card->description = $request->description;
-        $card->delivery_time = $request->delivery_time;
-        $card->save();
-
-        
-        $card->amounts()->sync($request->amounts);
-        $card->versions()->sync($request->versions);
-
         return redirect()->route('cards.index')->with('success', 'Card created successfully.');
     }
-
-
+    
     public function show(Card $card)
     {
         $card->load('amounts');
@@ -152,61 +107,11 @@ class CardController extends Controller
 
     public function edit(Card $card)
     {
-        // $platforms = Platform::all();
         $platforms = Platform::all();
         $amounts = Amount::all();
-        return view('backend.layouts.cards.edit', compact('card', 'platforms', 'amounts'));
+        $versions = Version::all();
+        return view('backend.layouts.cards.edit', compact('card', 'platforms', 'amounts','versions'));
     }
-
-    /**
-     * Update the specified card in the database.
-     */
-    // public function update(Request $request, Card $card)
-    // {
-    //     $request->validate([
-    //         'platform_id' => 'required|exists:platforms,id',
-    //         'title' => 'required|string|max:255',
-    //         'image' => 'nullable|image|mimes:png,jpg,jpeg,ico|max:2048',
-    //         'seller' => 'required|string|max:255',
-    //         'type' => 'required|in:voucher,gift_card',
-    //         'base_price' => 'required|numeric',
-    //         'discount' => 'nullable|numeric',
-    //         'stock' => 'required|integer',
-    //         'usage' => 'nullable|string',
-    //         'description' => 'nullable|string',
-    //         'delivery_time' => 'nullable|string',
-    //     ]);
-
-    //     // $card->update($request->all());
-
-    //     if ($request->hasFile('image')) {
-    //         // // Delete old favicon if it exists
-    //         if ($card->image && Storage::exists('public/' . $card->image)) {
-    //             Storage::delete('public/' . $card->image);
-    //         }
-
-
-    //         $path = $request->file('image')->store('cards', 'public');
-    //         $card->image = $path;
-    //     }
-
-    //     // Update other fields
-    //     $card->update([
-    //         'platform_id' => $request->platform_id,
-    //         'title' => $request->title,
-    //         'image' => isset($path) ? $path : $card->image,
-    //         'seller' => $request->seller,
-    //         'type' => $request->type,
-    //         'base_price' => $request->base_price,
-    //         'discount' => $request->discount,
-    //         'stock' => $request->stock,
-    //         'usage' => $request->usage,
-    //         'description' => $request->description,
-    //         'delivery_time' => $request->delivery_time,
-    //     ]);
-
-    //     return redirect()->route('cards.index')->with('success', 'Card updated successfully.');
-    // }
 
 
     public function update(Request $request, Card $card)
@@ -223,10 +128,10 @@ class CardController extends Controller
             'usage' => 'nullable|string',
             'description' => 'nullable|string',
             'delivery_time' => 'nullable|string',
-            'versions' => 'array',
-            'versions.*' => 'string|exists:versions,id',
-            'amounts' => 'array',
-            'amounts.*' => 'integer|exists:amounts,id',
+            'versions' => 'nullable|array',
+            'versions.*' => 'nullable|string|exists:versions,id',
+            'amounts' => 'nullable|array',
+            'amounts.*' => 'nullable|integer|exists:amounts,id',
         ]);
 
         if ($request->hasFile('image')) {
@@ -251,9 +156,15 @@ class CardController extends Controller
             'delivery_time' => $request->delivery_time,
         ]);
 
-        // Update the amounts associated with the card
-        $card->amounts()->sync($request->amounts);
-        $card->versions()->sync($request->versions);
+        // Update amounts if provided, otherwise keep the previous amounts
+        if ($request->has('amounts')) {
+            $card->amounts()->sync($request->amounts);
+        }
+
+        // Update versions if provided, otherwise keep the previous versions
+        if ($request->has('versions')) {
+            $card->versions()->sync($request->versions);
+        }
 
 
         return redirect()->route('cards.index')->with('success', 'Card updated successfully.');

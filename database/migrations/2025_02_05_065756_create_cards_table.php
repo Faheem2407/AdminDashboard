@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('title')->unique();
             $table->string('image')->nullable();
             $table->string('seller');
-            $table->enum('type', ['voucher', 'gift card']);
+            $table->enum('type', ['voucher', 'gift_card']);
             $table->float('base_price');
             $table->float('discount')->nullable();
             $table->integer('stock');

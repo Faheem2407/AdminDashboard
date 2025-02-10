@@ -65,6 +65,20 @@
                     <p class="text-danger">{{ $message }}</p>
                 @enderror
             </div>
+            {{-- version --}}
+
+            <div class="mb-3">
+                <label for="versions">Versions</label>
+                <select class="js-example-basic-multiple form-control" name="versions[]" multiple="multiple">
+                    @foreach ($versions as $version)
+                        <option value="{{ $version->id }}">{{ $version->name }}</option>
+                    @endforeach
+                </select>
+                @error('versions')
+                    <p class="text-danger">{{ $message }}</p>
+                @enderror
+            </div>
+            
             <div class="mb-3">
                 <label for="amounts">Available Amounts</label>
                 <select class="js-example-basic-multiple form-control" name="amounts[]" multiple="multiple">
