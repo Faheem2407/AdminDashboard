@@ -11,6 +11,8 @@ use App\Http\Controllers\Backend\Admin\AmountController;
 use App\Http\Controllers\Backend\Admin\VersionController;
 use App\Http\Controllers\Backend\UserController;
 
+
+
 // admin dashboard
 Route::get('/',[AdminController::class,'index'])->name('admin-dashboard');
 

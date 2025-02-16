@@ -53,9 +53,9 @@ class SiteInfoController extends Controller
     public function update(Request $request, SiteInfo $siteInfo)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => 'nullable|string|max:255',
             'fav_icon' => 'nullable|image|mimes:png,jpg,jpeg,ico|max:2048',
-            'copy_right_text' => 'required|string|max:255',
+            'copy_right_text' => 'nullable|string|max:255',
         ]);
 
         // Handle favicon upload
@@ -72,8 +72,8 @@ class SiteInfoController extends Controller
 
         // Update other fields
         $siteInfo->update([
-            'title' => $request->title,
-            'copy_right_text' => $request->copy_right_text,
+            'title' => $request->title ?? $siteInfo->title,
+            'copy_right_text' => $request->copy_right_text ?? $siteInfo->copy_right_text,
             'fav_icon' => isset($path) ? $path : $siteInfo->fav_icon, // Preserve old favicon if not updated
         ]);
 

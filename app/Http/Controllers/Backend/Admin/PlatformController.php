@@ -33,9 +33,6 @@ class PlatformController extends Controller
         $request->validate(
             [
                 'name' => 'required|string|max:255|unique:platforms',
-            ],
-            [
-                'name.required'=>'Platform name is required'
             ]
         );
 
@@ -47,10 +44,10 @@ class PlatformController extends Controller
     /**
      * Display the specified platform.
      */
-    public function show(Platform $platform)
-    {
-        return view('backend.layouts.platforms.show', compact('platform'));
-    }
+    // public function show(Platform $platform)
+    // {
+    //     return view('backend.layouts.platforms.show', compact('platform'));
+    // }
 
     /**
      * Show the form for editing the specified platform.
@@ -65,10 +62,11 @@ class PlatformController extends Controller
      */
     public function update(Request $request, Platform $platform)
     {
-        $request->validate([
-            'name' => 'required|string|max:255|unique:platforms,name,' . $platform->id,
-        ]);
-
+        $request->validate(
+            [
+                'name' => 'nullable|string|max:255|unique:platforms',
+            ]
+        );
         $platform->update($request->all());
 
         return redirect()->route('platforms.index')->with('success', 'Platform updated successfully.');

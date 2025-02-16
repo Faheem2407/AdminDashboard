@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('author');
             $table->text('content');
+            $table->string('image')->nullable();
             $table->timestamp('created_time')->useCurrent();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();

@@ -26,19 +26,45 @@ class BlogController extends Controller
 
     /**
      * Store a newly created blog in the database.
-     */
+    */
+    // public function store(Request $request)
+    // {
+    //     $request->validate([
+    //         'title' => 'required|string|max:255',
+    //         'author' => 'required|string|max:255',
+    //         'content' => 'required|string',
+    //     ]);
+
+    //     Blog::create($request->all());
+
+    //     return redirect()->route('blogs.index')->with('success', 'Blog created successfully.');
+    // }
+
+
     public function store(Request $request)
     {
         $request->validate([
             'title' => 'required|string|max:255',
             'author' => 'required|string|max:255',
             'content' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Image validation
         ]);
 
-        Blog::create($request->all());
+        $blog = new Blog();
+        $blog->title = $request->title;
+        $blog->author = $request->author;
+        $blog->content = $request->content;
 
-        return redirect()->route('blogs.index')->with('success', 'Blog created successfully.');
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('blogs', 'public'); // Store image in "storage/app/public/blogs"
+            $blog->image = $imagePath;
+        }
+
+        $blog->save();
+
+        return redirect()->route('blogs.index')->with('success', 'Blog created successfully!');
     }
+
 
     /**
      * Display the specified blog.

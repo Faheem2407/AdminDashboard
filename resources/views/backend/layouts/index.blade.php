@@ -1,7 +1,5 @@
 @extends('backend.app')
 
-
-
 @section('page-title')
     Admin Dashboard
 @endsection
@@ -24,3 +22,4 @@
         </tbody>
     </table>
 @endsection
+
